@@ -1,4 +1,5 @@
 'use strict';
+const util = require('util');
 
 class BST {
   constructor(key = null, value = null, parent = null) {
@@ -114,40 +115,44 @@ function main() {
   bst.insert(2, 2);
   bst.insert(5, 5);
   bst.insert(7, 7);
-  // console.log(bst);
-  console.log(height(bst));
-  console.log(isBST(bst));
-  console.log(thirdLargest(bst));
-  console.log(isBalanced(bst));
+  // console.log(util.inspect(bst, false, null));
+  // console.log(height(bst));
+  // console.log(isBST(bst));
+  // console.log(thirdLargest(bst));
+  // console.log(isBalanced(bst));
+  let bst1 = new BST();
+  bst1.insert('e', 'e');
+  bst1.insert('a', 'a');
+  bst1.insert('s', 's');
+  bst1.insert('y', 'y');
+  bst1.insert('q', 'q');
+  bst1.insert('u', 'u');
+  bst1.insert('e', 'e');
+  bst1.insert('s', 's');
+  bst1.insert('t', 't');
+  bst1.insert('i', 'i');
+  bst1.insert('o', '');
+  bst1.insert('n', 'n');
+  console.log(minHeight(bst1));
 }
 
 main();
 
-function height(node, count = 1) {
+function height(node) {
+  if (!node) return 0;
   if (!node.left && !node.right) {
-    return count;
-  } else if (node.left && node.right) {
-    const left = height(node.left, count + 1);
-    const right = height(node.right, count + 1);
-    return left > right ? left : right;
-  } else if (node.left) {
-    return height(node.left, count + 1);
-  } else {
-    return height(node.right, count + 1);
-  }
+    return 1;
+  } else if (node.left || node.right) {
+    return Math.max(height(node.left), height(node.right)) + 1;
+  } 
 }
 
-function minHeight(node, count = 1) {
+function minHeight(node) {
+  if (!node) return 0;
   if (!node.left && !node.right) {
-    return count;
-  } else if (node.left && node.right) {
-    const left = height(node.left, count + 1);
-    const right = height(node.right, count + 1);
-    return left < right ? left : right;
-  } else if (node.left) {
-    return height(node.left, count + 1);
-  } else {
-    return height(node.right, count + 1);
+    return 1;
+  } else if (node.left || node.right) {
+    return Math.min(height(node.left), height(node.right)) + 1;
   }
 }
 
