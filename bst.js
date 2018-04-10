@@ -104,7 +104,6 @@ class BST {
   }
 }
 
-
 function main() {
   let bst = new BST();
   bst.insert(3, 3);
@@ -118,11 +117,13 @@ function main() {
   // console.log(bst);
   console.log(height(bst));
   console.log(isBST(bst));
+  console.log(thirdLargest(bst));
+  console.log(isBalanced(bst));
 }
 
 main();
 
-function height(node, count=1) {
+function height(node, count = 1) {
   if (!node.left && !node.right) {
     return count;
   } else if (node.left && node.right) {
@@ -136,8 +137,41 @@ function height(node, count=1) {
   }
 }
 
-function isBST(node, min=Number.NEGATIVE_INFINITY, max=Number.POSITIVE_INFINITY) {
+function minHeight(node, count = 1) {
+  if (!node.left && !node.right) {
+    return count;
+  } else if (node.left && node.right) {
+    const left = height(node.left, count + 1);
+    const right = height(node.right, count + 1);
+    return left < right ? left : right;
+  } else if (node.left) {
+    return height(node.left, count + 1);
+  } else {
+    return height(node.right, count + 1);
+  }
+}
+
+function isBST(
+  node,
+  min = Number.NEGATIVE_INFINITY,
+  max = Number.POSITIVE_INFINITY
+) {
   if (!node) return true;
   if (node.value < min || node.value > max) return false;
-  return (isBST(node.left, min, node.value - 1) && isBST(node.right, node.value + 1, max));
+  return (
+    isBST(node.left, min, node.value - 1) &&
+    isBST(node.right, node.value + 1, max)
+  );
+}
+
+function thirdLargest(node, count = 1) {
+  if (!node) return;
+  if (count === 3) return node.value;
+  return (
+    thirdLargest(node.right, count + 1) || thirdLargest(node.left, count + 1)
+  );
+}
+
+function isBalanced(node) {
+  return height(node) - minHeight(node) < 2;
 }
